@@ -103,11 +103,41 @@ void PlanetGLWidget::paintGL()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glUseProgram(programID);
+    glLineWidth(3);
+    glEnable(GL_LINE_SMOOTH);
     std::printf("%d\n", i++);
 
     drawCircle(100);
 }
 
+void PlanetGLWidget::drawCircle(int prec)
+{
+    int len = (prec + 2) * 3;
+    GLfloat verx[] = {1.0f, 1.0f, 0.0f, -1.0f, -1.0f, 0.0f};
+
+    GLuint vertexbuffer;
+
+    glGenBuffers(1, &vertexbuffer);
+    // The following commands will talk about our 'vertexbuffer' buffer
+    glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
+    // Give our vertices to OpenGL.
+    glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(GLfloat), verx, GL_STATIC_DRAW);
+    glEnableVertexAttribArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
+    glVertexAttribPointer(
+       0,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
+       3,                  // size
+       GL_FLOAT,           // type
+       GL_FALSE,           // normalized?
+       0,                  // stride
+       (void*)0            // array buffer offset
+    );
+    // Draw the triangle !
+    glDrawArrays(GL_LINES, 0, 2); // Starting from vertex 0; 3 vertices total -> 1 triangle
+    glDisableVertexAttribArray(0);
+
+}
+/*
 void PlanetGLWidget::drawCircle(int prec)
 {
     int len = (prec + 2) * 3;
@@ -147,7 +177,7 @@ void PlanetGLWidget::drawCircle(int prec)
     glDisableVertexAttribArray(0);
 
     free(verx);
-}
+}*/
 
 void PlanetGLWidget::resizeGL(int w, int h)
 {
