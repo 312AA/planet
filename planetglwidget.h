@@ -5,6 +5,7 @@
 #include <QOpenGLFunctions>
 #include <QObject>
 #include <QWidget>
+#include <QTimer>
 
 class PlanetGLWidget : public QOpenGLWidget, protected QOpenGLFunctions
 {
@@ -21,7 +22,9 @@ public:
     void resizeGL(int w, int h);
 
     void loadShaders();
-    void drawCircle(int prec);
+    void drawCircle(GLfloat cx, GLfloat cy, GLfloat r);
+    void line(GLfloat x1, GLfloat y1, GLfloat x2, GLfloat y2);
+    void circlev2(GLfloat cx, GLfloat cy, GLfloat r);
 };
 
 #endif // PLANETGLWIDGET_H

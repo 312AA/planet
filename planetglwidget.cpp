@@ -103,51 +103,59 @@ void PlanetGLWidget::paintGL()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glUseProgram(programID);
-    glLineWidth(3);
+    glLineWidth(0.1);
     glEnable(GL_LINE_SMOOTH);
-    std::printf("%d\n", i++);
+    //std::printf("%d\n", i++);
 
-    drawCircle(100);
+    GLfloat xc1,yc1,xc2,yc2,R=0.4,H=0.7,l=0.5,wc=10,wp=10;
+    circlev2(0,0,R);
+    line(0,0,R*cos(wc*i*2*M_PI/1000),R*sin(wc*i*2*M_PI/1000));
+    //drawCircle(0.7*cos(2*i*M_PI/1000),0.7*sin(2*i*M_PI/1000),0.1);
+    xc1=H*cos(wc*i*2*M_PI/1000)+l/2*cos(wp*i*2*M_PI/1000);
+    yc1=H*sin(wc*i*2*M_PI/1000)+l/2*sin(wp*i*2*M_PI/1000);
+    xc2=H*cos(wc*i*2*M_PI/1000)-l/2*cos(wp*i*2*M_PI/1000);
+    yc2=H*sin(wc*i*2*M_PI/1000)-l/2*sin(wp*i*2*M_PI/1000);
+    line(xc1,yc1,xc2,yc2);
+    circlev2(xc1,yc1,0.04);
+    circlev2(xc2,yc2,0.04);
+    //circlev2(0.7*cos(2*i*M_PI/1000),0.7*sin(2*i*M_PI/1000),0.1);
+
+    i++;
 }
 
-void PlanetGLWidget::drawCircle(int prec)
+void PlanetGLWidget::line(GLfloat x1, GLfloat y1, GLfloat x2, GLfloat y2)
 {
-    int len = (prec + 2) * 3;
-    GLfloat verx[] = {1.0f, 1.0f, 0.0f, -1.0f, -1.0f, 0.0f};
-
     GLuint vertexbuffer;
-
-    glGenBuffers(1, &vertexbuffer);
-    // The following commands will talk about our 'vertexbuffer' buffer
+    GLfloat ptarray[6];
+    ptarray[0]=x1;
+    ptarray[1]=y1;
+    ptarray[2]=0;
+    ptarray[3]=x2;
+    ptarray[4]=y2;
+    ptarray[5]=0;
+    glGenBuffers(1,&vertexbuffer);
     glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-    // Give our vertices to OpenGL.
-    glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(GLfloat), verx, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER,6*sizeof(GLfloat),ptarray,GL_STATIC_DRAW);
     glEnableVertexAttribArray(0);
-    glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-    glVertexAttribPointer(
-       0,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
-       3,                  // size
-       GL_FLOAT,           // type
-       GL_FALSE,           // normalized?
-       0,                  // stride
-       (void*)0            // array buffer offset
-    );
-    // Draw the triangle !
-    glDrawArrays(GL_LINES, 0, 2); // Starting from vertex 0; 3 vertices total -> 1 triangle
+    glBindBuffer(GL_ARRAY_BUFFER,vertexbuffer);
+    glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,0,(void*)0);
+    glDrawArrays(GL_LINES,0,2);
     glDisableVertexAttribArray(0);
-
 }
-/*
-void PlanetGLWidget::drawCircle(int prec)
+
+void PlanetGLWidget::drawCircle(GLfloat cx, GLfloat cy, GLfloat r)
 {
+    int prec=3;
     int len = (prec + 2) * 3;
     GLfloat *verx = (GLfloat *) std::malloc(len * sizeof(GLfloat));
 
-    verx[2] = verx[1] = verx[0] = 0.0f;
+    verx[0]=cx;
+    verx[1]=cy;
+    verx[2]=0;
 
     for (int i = 0; i < prec; i++) {
-        verx[3 + 3 * i] = std::sin(2 * M_PI * i / prec);
-        verx[3 + 3 * i + 1] = std::cos(2 * M_PI * i / prec);
+        verx[3 + 3 * i] = cx + r*std::cos(2 * M_PI * i / prec);
+        verx[3 + 3 * i + 1] =cy + r*std::sin(2 * M_PI * i / prec);
         verx[3 + 3 * i + 2] = 0;
     }
 
@@ -177,7 +185,20 @@ void PlanetGLWidget::drawCircle(int prec)
     glDisableVertexAttribArray(0);
 
     free(verx);
-}*/
+}
+
+void PlanetGLWidget::circlev2(GLfloat cx, GLfloat cy, GLfloat r)
+{
+    GLfloat x1=cx+r,y1=cy,x2=cx+r,y2=cy;
+    for(int i=1;i<1000;i++)
+    {
+        x1=x2;
+        y1=y2;
+        x2=cx+r*cos(i*2*M_PI/999);
+        y2=cy+r*sin(i*2*M_PI/999);
+        line(x1,y1,x2,y2);
+    }
+}
 
 void PlanetGLWidget::resizeGL(int w, int h)
 {
