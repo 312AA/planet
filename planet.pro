@@ -15,7 +15,8 @@ SOURCES += \
 
 HEADERS += \
     mainwindow.h \
-    planetglwidget.h
+    planetglwidget.h \
+    stb_image.h
 
 FORMS += \
     mainwindow.ui
