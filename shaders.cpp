@@ -1,0 +1,21 @@
+const char *vertexShader = "#version 330 core\n"
+    "layout (location = 0) in vec4 position;\n"
+    "layout (location = 1) in vec4 color_in;\n"
+    "layout (location = 2) in vec2 texture_in;\n"
+    "out vec4 color;\n"
+    "out vec2 texture_pos;\n"
+    "void main() {\n"
+    "    gl_Position = position;\n"
+    "    color = color_in;\n"
+    "    texture_pos = texture_in;\n"
+    "}\n";
+
+const char *fragmentShader = "#version 330 core\n"
+    "in vec4 color;\n"
+    "in vec2 texture_pos;\n"
+    "out vec4 color_out;\n"
+    "uniform sampler2D texture_sampler;\n"
+    "void main() {\n"
+    //"color_out = color;\n"
+    "color_out = texture(texture_sampler, texture_pos);\n"
+    "}\n";

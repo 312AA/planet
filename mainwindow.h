@@ -16,6 +16,14 @@ public:
     ~MainWindow();
     void updates();
 
+    void putData(double x, double y, double vx, double vy, double ax, double ay);
+
+private slots:
+    void on_pushButton_clicked();
+
+
+    void on_stop_stateChanged(int arg1);
+
 private:
     Ui::MainWindow *ui;
 };
