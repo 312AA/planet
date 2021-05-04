@@ -26,18 +26,30 @@ MainWindow::~MainWindow()
 }
 
 
-void MainWindow::on_pushButton_clicked()
+void MainWindow::on_pushButtonEuler_clicked()
 {
     ui->planetGLWidget->createBody = true;
+    ui->planetGLWidget->createBodyType = BodyTypeEuler;
+}
+
+void MainWindow::on_pushButtonRk_clicked()
+{
+    ui->planetGLWidget->createBody = true;
+    ui->planetGLWidget->createBodyType = BodyTypeRk;
+}
+
+void MainWindow::on_stop_stateChanged(int arg1)
+{
+    ui->planetGLWidget->stopped = arg1;
 }
 
 void MainWindow::putData(double x, double y, double vx, double vy, double ax, double ay)
 {
     char buf[50];
 
-    /*sprintf(buf, "x: %.4f km", x/1e3);
+    sprintf(buf, "x: %.4f km", (x == 0) ? 0 : x/1e3);
     ui->xLabel->setText(QString(buf));
-    sprintf(buf, "y: %.4f km", y/1e3);
+    sprintf(buf, "y: %.4f km", (y == 0) ? 0 : y/1e3);
     ui->yLabel->setText(QString(buf));
     sprintf(buf, "vx: %.4f m/s", vx);
     ui->vxLabel->setText(QString(buf));
@@ -46,12 +58,5 @@ void MainWindow::putData(double x, double y, double vx, double vy, double ax, do
     sprintf(buf, "ax: %.4f m/s^2", ax);
     ui->axLabel->setText(QString(buf));
     sprintf(buf, "ay: %.4f m/s^2", ay);
-    ui->ayLabel->setText(QString(buf));*/
-}
-
-
-
-void MainWindow::on_stop_stateChanged(int arg1)
-{
-    ui->planetGLWidget->stopped = arg1;
+    ui->ayLabel->setText(QString(buf));
 }

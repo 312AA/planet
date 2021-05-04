@@ -1,6 +1,8 @@
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
+constexpr double PI = 3.14159265358979323846;
+
 constexpr double M = 5.9722e24;
 constexpr double G = 6.6743e-11;
 constexpr double R = 6371e3;

@@ -30,6 +30,11 @@ MessageCallback( GLenum source,
 extern const char *vertexShader;
 extern const char *fragmentShader;
 
+enum CreateBodyType {
+    BodyTypeEuler,
+    BodyTypeRk,
+};
+
 class PlanetGLWidget : public QOpenGLWidget, protected QOpenGLExtraFunctions
 {
     Q_OBJECT
@@ -53,7 +58,9 @@ private:
     double createBody_y;
 public:
     MainWindow *mw;
+
     std::atomic<bool> createBody;
+    std::atomic<CreateBodyType> createBodyType;
     std::atomic<bool> stopped;
 
     PlanetGLWidget(QWidget *parent = nullptr);
@@ -69,7 +76,7 @@ public:
     void loadShader(const char *shader, GLuint shaderID);
     void loadTextures();
 
-    void drawCircle(GLfloat cx, GLfloat cy, GLfloat r, GLuint textureID, GLfloat color_r = 0.0f, GLfloat color_g = 0.0f, GLfloat color_b = 0.0f, bool fill = true);
+    void drawCircle(GLfloat cx, GLfloat cy, GLfloat r, GLuint textureID, double angle = 0, GLfloat color_r = 0.0f, GLfloat color_g = 0.0f, GLfloat color_b = 0.0f, bool fill = true);
     //void line(GLfloat x1, GLfloat y1, GLfloat x2, GLfloat y2);
     //void circlev2(GLfloat cx, GLfloat cy, GLfloat r);
 

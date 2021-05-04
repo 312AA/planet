@@ -21,7 +21,7 @@
     glDeleteBuffers(1, &vertexbuffer);
 }*/
 
-void PlanetGLWidget::drawCircle(GLfloat cx, GLfloat cy, GLfloat r, GLuint textureID, GLfloat color_r, GLfloat color_g, GLfloat color_b, bool fill)
+void PlanetGLWidget::drawCircle(GLfloat cx, GLfloat cy, GLfloat r, GLuint textureID, double angle, GLfloat color_r, GLfloat color_g, GLfloat color_b, bool fill)
 {
     constexpr int prec = 50;
 
@@ -50,8 +50,8 @@ void PlanetGLWidget::drawCircle(GLfloat cx, GLfloat cy, GLfloat r, GLuint textur
         verx[stride + stride * i + 5] = color_g;
         verx[stride + stride * i + 6] = color_b;
         verx[stride + stride * i + 7] = 1.0f;
-        verx[stride + stride * i + 8] = std::cos(2 * M_PI * i / prec) / 2 + 0.5f;
-        verx[stride + stride * i + 9] = -std::sin(2 * M_PI * i / prec) / 2 + 0.5f;
+        verx[stride + stride * i + 8] = std::cos(2 * M_PI * i / prec + angle) / 2 + 0.5f;
+        verx[stride + stride * i + 9] = -std::sin(2 * M_PI * i / prec + angle) / 2 + 0.5f;
     }
 
     verx[len - stride] = verx[stride];

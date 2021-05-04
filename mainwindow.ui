@@ -24,17 +24,17 @@
      </rect>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="pushButtonEuler">
     <property name="geometry">
      <rect>
-      <x>730</x>
-      <y>310</y>
-      <width>171</width>
-      <height>141</height>
+      <x>650</x>
+      <y>480</y>
+      <width>101</width>
+      <height>61</height>
      </rect>
     </property>
     <property name="text">
-     <string>Corp</string>
+     <string>Corp Euler</string>
     </property>
    </widget>
    <widget class="QLabel" name="xLabel">
@@ -118,14 +118,27 @@
    <widget class="QCheckBox" name="stop">
     <property name="geometry">
      <rect>
-      <x>790</x>
-      <y>240</y>
+      <x>700</x>
+      <y>390</y>
       <width>81</width>
       <height>20</height>
      </rect>
     </property>
     <property name="text">
      <string>Stop</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButtonRk">
+    <property name="geometry">
+     <rect>
+      <x>770</x>
+      <y>480</y>
+      <width>131</width>
+      <height>71</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Corp Runge-Kutta</string>
     </property>
    </widget>
   </widget>

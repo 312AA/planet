@@ -53,10 +53,16 @@ void PlanetGLWidget::paintGL()
         }
     }
 
+    double outx, outy, outvx, outvy, outax, outay, outangle;
     for (auto &it: bodies) {
-        drawCircle(it.x / maxdistance, it.y / maxdistance, 0.1, textureID1);
-        mw->putData(it.x, it.y, it.vx, it.vy, it.ax, it.ay);
+        drawCircle(it.x / maxdistance, it.y / maxdistance, 0.1, textureID1, it.angle);
+        outx = it.x, outy = it.y, outvx = it.vx, outvy = it.vy, outax = it.ax, outay = it.ay, outangle = it.angle;
     }
+
+    if (bodies.size() > 0)
+        mw->putData(outx, outy, outvx, outvy, outax, outay);
+
+    std::cerr << outangle * 180 / PI << " ";
 
     auto t2 = clock.now();
 
@@ -82,19 +88,17 @@ void PlanetGLWidget::mouseReleaseEvent(QMouseEvent *event)
     if (!createBody)
         return;
 
+    bool rk = createBodyType == BodyTypeRk;
+
     std::cerr << event->position().x() << " " << event->position().y() << std::endl;
 
     double x = ( event->position().x() - screensize / 2) * maxdistance / (screensize / 2);
     double y = (-event->position().y() + screensize / 2) * maxdistance / (screensize / 2);
 
-
-
-    bodies.push_back(Body(1000, createBody_x, createBody_y, (createBody_x - x) / 10, (createBody_y - y) / 10));
+    bodies.push_back(Body(1000, createBody_x, createBody_y, (createBody_x - x) / 10, (createBody_y - y) / 10, rk));
 
     createBody = false;
 }
-
-
 
 void PlanetGLWidget::resizeGL(int w, int h)
 {

@@ -19,10 +19,12 @@ public:
     void putData(double x, double y, double vx, double vy, double ax, double ay);
 
 private slots:
-    void on_pushButton_clicked();
+    void on_pushButtonEuler_clicked();
 
 
     void on_stop_stateChanged(int arg1);
+
+    void on_pushButtonRk_clicked();
 
 private:
     Ui::MainWindow *ui;
