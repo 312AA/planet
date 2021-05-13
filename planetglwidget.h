@@ -33,6 +33,7 @@ extern const char *fragmentShader;
 enum CreateBodyType {
     BodyTypeEuler,
     BodyTypeRk,
+    BodyTypeTh,
 };
 
 class PlanetGLWidget : public QOpenGLWidget, protected QOpenGLExtraFunctions
@@ -48,6 +49,7 @@ private:
     GLuint programID;
     GLuint textureID1;
     GLuint textureID2;
+    GLuint textureIDbg;
 
     int i;
     std::chrono::high_resolution_clock clock;
@@ -59,8 +61,6 @@ private:
 public:
     MainWindow *mw;
 
-    std::atomic<bool> createBody;
-    std::atomic<CreateBodyType> createBodyType;
     std::atomic<bool> stopped;
 
     PlanetGLWidget(QWidget *parent = nullptr);
@@ -71,16 +71,21 @@ public:
 
     void mousePressEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
+    void createSimBody(double x, double y, double vx, double vy, bool rk);
+    void createThBodies(double x, double y, double len, double wcm, double wp, double k, double c);
 
     void loadShaders();
     void loadShader(const char *shader, GLuint shaderID);
     void loadTextures();
 
     void drawCircle(GLfloat cx, GLfloat cy, GLfloat r, GLuint textureID, double angle = 0, GLfloat color_r = 0.0f, GLfloat color_g = 0.0f, GLfloat color_b = 0.0f, bool fill = true);
-    //void line(GLfloat x1, GLfloat y1, GLfloat x2, GLfloat y2);
+    void line(GLfloat x1, GLfloat y1, GLfloat x2, GLfloat y2);
+    void drawBackground(GLuint textureID);
     //void circlev2(GLfloat cx, GLfloat cy, GLfloat r);
 
     void addBodyMouse();
+
+    void clear();
 };
 
 #endif // PLANETGLWIDGET_H

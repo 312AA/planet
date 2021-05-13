@@ -1,6 +1,6 @@
 #include "planetglwidget.h"
 
-/*void PlanetGLWidget::line(GLfloat x1, GLfloat y1, GLfloat x2, GLfloat y2)
+void PlanetGLWidget::line(GLfloat x1, GLfloat y1, GLfloat x2, GLfloat y2)
 {
     GLuint vertexbuffer;
     GLfloat ptarray[6];
@@ -19,7 +19,7 @@
     glDrawArrays(GL_LINES,0,2);
     glDisableVertexAttribArray(0);
     glDeleteBuffers(1, &vertexbuffer);
-}*/
+}
 
 void PlanetGLWidget::drawCircle(GLfloat cx, GLfloat cy, GLfloat r, GLuint textureID, double angle, GLfloat color_r, GLfloat color_g, GLfloat color_b, bool fill)
 {
@@ -87,6 +87,67 @@ void PlanetGLWidget::drawCircle(GLfloat cx, GLfloat cy, GLfloat r, GLuint textur
         glDrawArrays(GL_TRIANGLE_FAN, 0, len / stride);
     else
         glDrawArrays(GL_LINE_STRIP, 1, len / stride - 1);
+
+
+    glDisableVertexAttribArray(0);
+    glDisableVertexAttribArray(1);
+    glDisableVertexAttribArray(2);
+
+    glDeleteBuffers(1, &vertexbuffer);
+}
+
+void PlanetGLWidget::drawBackground(GLuint textureID)
+{
+    GLuint vertexbuffer;
+    GLfloat verx[40];
+
+    for (int i = 0; i < 4; i++) {
+        verx[i * 10 + 2] = 0;
+        verx[i * 10 + 3] = 1;
+
+        verx[i * 10 + 5] = 0;
+        verx[i * 10 + 6] = 0;
+        verx[i * 10 + 7] = 0;
+    }
+
+    verx[0] = -1.f;
+    verx[1] = 1.f;
+    verx[8] = 0.f;
+    verx[9] = 0.f;
+
+    verx[10] = 1.f;
+    verx[11] = 1.f;
+    verx[18] = 1.f;
+    verx[19] = 0.f;
+
+    verx[20] = -1.f;
+    verx[21] = -1.f;
+    verx[28] = 0.f;
+    verx[29] = 1.f;
+
+    verx[30] = 1.f;
+    verx[31] = -1.f;
+    verx[38] = 1.f;
+    verx[39] = 1.f;
+
+
+
+
+    glGenBuffers(1, &vertexbuffer);
+    glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
+
+    glBufferData(GL_ARRAY_BUFFER, 40 * sizeof(GLfloat), verx, GL_STATIC_DRAW);
+    glEnableVertexAttribArray(0);
+    glEnableVertexAttribArray(1);
+    glEnableVertexAttribArray(2);
+    glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
+    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 10 * sizeof(GLfloat), (void *) 0);
+    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 10 * sizeof(GLfloat), (void *) (4 * sizeof(GLfloat)));
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 10 * sizeof(GLfloat), (void *) (8 * sizeof(GLfloat)));
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, textureID);
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+
 
 
     glDisableVertexAttribArray(0);
